@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#Config kaggle
-pip3 install kaggle
-sudo cp ./kaggle.json /root/.kaggle/kaggle.json
-chmod 600 /root/.kaggle/kaggle.json
-
+# download data
+mkdir data
+cd data 
+wget https://archive.org/download/deepfake-detection-challenge/deepfake-detection-challenge.zip
+unzip deepfake-detection-challenge.zip
 
 
