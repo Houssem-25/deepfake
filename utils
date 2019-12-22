@@ -1,0 +1,2 @@
+def _split_audio(audio):
+    return np.array(np.split(audio[:220500],300))

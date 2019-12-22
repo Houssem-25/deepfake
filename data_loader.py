@@ -3,11 +3,11 @@ import pandas as pd
 from sklearn.utils import resample
 from sklearn.model_selection import train_test_split
 
-def get_data(path):
+def get_data(path,test_split=0.2):
     data_path = os.getcwd() + path
     df = pd.read_json(data_path + "metadata.json").T
     df = _downsampling(df)
-    train , test , _, __= _split_data(df)
+    train , test , _, __= _split_data(df,test_split)
     return train,test
 
 def _downsampling(df):
