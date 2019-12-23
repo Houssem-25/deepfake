@@ -17,13 +17,11 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbos
 early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1)
 
 class Model():
-	def __init__(self, image_train,audio_train,image_validation,audio_validation,epochs=10):
-		self.image_train =image_train
-		self.audio_train = audio_train
-		self.image_validation = image_validation
-		self.audio_validation =audio_validation
-		self.epochs= epochs
-		#self.batch_size = image_train.batch_size
+	def __init__(self, train_gen,test_gen,val_gen,epochs=10):
+		self.train_gen =train_gen
+		self.test_gen = test_gen
+		self.val_gen = val_gen
+		self.epochs =epochs
 	
 	def create_model(self):
 		image_model_,image_input_ = self.image_model()
@@ -74,22 +72,17 @@ class Model():
 
 	def fit(self):
 
-		self.model.fit_generator(generator=self.train_generator,epochs=self.epochs,
-                    			validation_data=self.validation_generator,
+		self.model.fit_generator(generator=self.train_gen,epochs=self.epochs,
+                    			validation_data=self.train_gen,
                     			use_multiprocessing=True,
-                    			workers=4,callbacks = [checkpoint,reduce_lr,early_stopping])
+                    			workers=2,callbacks = [checkpoint,reduce_lr,early_stopping])
 		self.model.save("save")
 
 	def evaluate(self):
-		score, acc = self.model.evaluate_generator(generator=self.test_generator,
+		score, acc = self.model.evaluate_generator(generator=self.test_gen,
                                               max_queue_size=10, workers=1, use_multiprocessing=False,
                                               verbose=0)
 		print('Test score:', score)
 		print('Test accuracy:', acc)
 
 
-
-model = Model([],[],[],[])
-model.create_model()
-model.summery()
-model.model.save("ss")

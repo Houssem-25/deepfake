@@ -114,3 +114,4 @@ class ImageGenerator(Sequence):
         for i, img in enumerate(file):
             X[i] = self.read_images(self.base_path+img)        
         return X 
+        
